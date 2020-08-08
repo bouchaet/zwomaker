@@ -1,0 +1,18 @@
+<workout_file>
+   <author>bouchaet</author>
+   <name>Gentle</name>
+   <description></description>
+   <sportType>run</sportType>
+   <tags>
+      <tag name="Mes entrainements"/>
+      <tag name="Slow comeback"/>
+   </tags>
+   <workout>
+      <Warmup Duration="400" PowerLow="0.2" PowerHigh="0.5">
+         <textevent timeoffset="20" message="Welcome back! We start with an easy walk to a slow jog for 400 meters."/>
+      </Warmup>
+      <IntervalsT Repeat="2" OnDuration="200" OffDuration="50" OnPower="0.55" OffPower="0.3"/>
+      <SteadyState Duration="2000" Power="0.50" />
+      <Cooldown Duration="400" PowerLow="0.3" PowerHigh="0.2"/>
+   </workout>
+</workout_file>

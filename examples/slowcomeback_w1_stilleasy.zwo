@@ -1,0 +1,17 @@
+<workout_file>
+   <author>bouchaet</author>
+   <name>Still Easy</name>
+   <description></description>
+   <sportType>run</sportType>
+   <tags>
+      <tag name="Mes entrainements"/>
+      <tag name="Slow comeback"/>
+   </tags>
+   <workout>
+      <Warmup Duration="400" PowerLow="0.2" PowerHigh="0.5">
+         <textevent timeoffset="20" message="Welcome back! We start with an easy walk to a slow jog for 400 meters."/>
+      </Warmup>
+      <IntervalsT Repeat="2" OnDuration="1000" OffDuration="200" OnPower="0.55" OffPower="0.3"/>
+      <Cooldown Duration="200" PowerLow="0.3" PowerHigh="0.2"/>
+   </workout>
+</workout_file>

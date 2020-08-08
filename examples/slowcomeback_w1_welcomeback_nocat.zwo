@@ -1,0 +1,27 @@
+<workout_file>
+   <author>bouchaet</author>
+   <name>Welcome back 3x4 minutes</name>
+   <description>Today is a 3 x 4 minutes of slow jog and walk. A controlled workout to begin the rebuilding of your running muscles.
+
+We want to start easy and avoid any stress on a recent injury, which is fully healed by now. I can presume.
+
+</description>
+   <sportType>run</sportType>
+   <tags/>
+   <workout>
+      <Warmup Duration="120" PowerLow="0.2" PowerHigh="0.4">
+         <textevent timeoffset="20" message="Welcome back! We start with an easy walk for 2 minutes."/>
+         <textevent timeoffset="90" message="First repetition is coming. Be ready to set your treadmill."/>
+         <textevent timeoffset="110" message="10 secs."/>
+      </Warmup>
+      <IntervalsT Repeat="3" OnDuration="240" OffDuration="60"  OnPower="0.5" OffPower="0.2">
+         <textevent timeoffset="120" message="Easy breathing. Smooth feet. Cadence comfortable. Looking good."/>
+         <textevent timeoffset="290" message="Ok, get ready for another one."/>
+         <textevent timeoffset="590" message="Last repetition. Keep it nice and easy."/>
+         <textevent timeoffset="830" message="About done. 10 seconds more."/>
+      </IntervalsT>
+      <Cooldown Duration="120" PowerLow="0.4" PowerHigh="0.2">
+         <textevent timeoffset="60" Duration="20" message="Good work. Well done, you're back!"/>
+      </Cooldown>
+   </workout>
+</workout_file>
