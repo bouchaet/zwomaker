@@ -26,7 +26,7 @@ class ZwoElement():
             self._elements.append(element)
 
     def get_duration(self):
-        return next((x for x in self._attribs if x[0].lower() == "duration"),
+        return next((x[1] for x in self._attribs if x[0].lower() == "duration"),
                     None)
 
     def set_duration(self, value):
@@ -35,6 +35,9 @@ class ZwoElement():
                 x[1] = value
 
     duration = property(get_duration, set_duration)
+
+    def get_repeat(self):
+        return next((x[1] for x in self._attribs if x[0].lower() == "repeat"), 1)
 
 
 class TextEvent(ZwoElement):
@@ -59,7 +62,7 @@ class ZwoParser():
 class Intervals(ZwoParser):
     def __init__(self):
         super().__init__(
-            "^I [0-9]* [0-9]*:[0-9]* [0-9]*:[0-9]*( [0-9](2,3))?")
+            "^I [0-9]{1,2} [0-9]*:[0-9]* [0-9]*:[0-9]*( [0-9]{2,3})?")
 
     def parse(self, line):
         tokens = line.split()
@@ -149,6 +152,11 @@ class Name(ZwoParser):
         return ZwoElement("name", tokens[1])
 
 
+class Comment(ZwoParser):
+    def __init__(self):
+        super().__init__("^#.*$")
+    
+
 def lex(zwo_spec):
     wof = ZwoElement("workout_file")
     wo = ZwoElement("workout")
@@ -158,7 +166,8 @@ def lex(zwo_spec):
         (Name(), wof.add_element),
         (Warmup(), wo.add_element),
         (Cooldown(), wo.add_element),
-        (SteadyState(), wo.add_element)
+        (SteadyState(), wo.add_element),
+        (Comment(), lambda x : print("Ignore comment"))
     ]
 
     for line in zwo_spec.splitlines():
@@ -169,8 +178,8 @@ def lex(zwo_spec):
         match = False
         for parser, action in parser_actions:
             if parser.can_parse(line):
-                action(parser.parse(line))
                 print(f"Match with {parser.__class__.__name__}")
+                action(parser.parse(line))
                 match = True
                 continue
         if not match:
@@ -198,6 +207,7 @@ SAMPLE = """
 N Sample Workout
 W 1000 65:75
 S 1000 82 180
+# main set 2x 1000m
 I 2 1000:200 90:65 180
 R 1000 65:82 180
 C 1000 75:65
@@ -205,13 +215,13 @@ C 1000 75:65
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Zwift worker maker.")
+    parser = argparse.ArgumentParser(description="Zwift workout maker.")
     parser.add_argument("-s", "--specfile", type=str)
     parser.add_argument("-o", "--output", type=str, default="out.zwo")
     parser.add_argument("-p", "--print", action="store_true")
 
     args = parser.parse_args()
-    spec = SAMPLE
+    spec = SAMPLE  #for dev
     if args.specfile:
         with open(args.specfile, "r") as file:
             spec = file.read()
