@@ -252,6 +252,8 @@ def lex(zwo_spec: str) -> ZwoElement:
         if not match:
             print("*** NO MATCH ***")
 
+    wof.add_element(ZwoElement("author", "zwomaker"))
+    wof.add_element(ZwoElement("description", "prepared by zwomaker"))
     wof.add_element(ZwoElement("sportType", "run"))
     wof.add_element(get_tags())
     wof.add_element(wo)
@@ -260,8 +262,14 @@ def lex(zwo_spec: str) -> ZwoElement:
 
 def get_tags() -> ZwoElement:
     tags = ZwoElement("tags")
-    tags.add_element(ZwoElement("tag", "ZwoMaker"))
-    tags.add_element(ZwoElement("tag", "Running"))
+
+    tag = ZwoElement("tag")
+    tag.add_attrib("name", "zwomaker")
+    tags.add_element(tag)
+
+    tag = ZwoElement("tag")
+    tag.add_attrib("name", "running")
+    tags.add_element(tag)
     return tags
     
 
