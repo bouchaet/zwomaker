@@ -216,8 +216,7 @@ class Name(ZwoParser):
         super().__init__("^N .*")
 
     def parse(self, line):
-        tokens = line.split()
-        return ZwoElement("name", tokens[1])
+        return ZwoElement("name", line[2:])
 
 
 class Comment(ZwoParser):
