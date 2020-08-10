@@ -9,9 +9,15 @@
 		<tag name="running"/>
 	</tags>
 	<workout>
-		<Warmup Duration="400" PowerLow="0.5" PowerHigh="0.6">
+		<Warmup Duration="1000" PowerLow="0.5" PowerHigh="0.55">
 			<textevent distoffset="200" message="Welcome to your running workout."/>
-			<textevent distoffset="300" message="Last 100 meters. Almost there!"/>
+			<textevent distoffset="300" message="Pay attention to your treadmill speed."/>
+			<textevent distoffset="400" message="I will send you reminders throughout the sets to keep your attention :-)"/>
+			<textevent distoffset="500" message="I hope you had enough time to recover from your last workout."/>
+			<textevent distoffset="600" message="This should be fun. You already prove your motivation by being here!"/>
+			<textevent distoffset="700" message="Did you start your fan?"/>
+			<textevent distoffset="800" message="Do you have your towel and your bottle of water?"/>
+			<textevent distoffset="900" message="Last 100 meters. Almost there!"/>
 		</Warmup>
 		<SteadyState Duration="1000" Power="0.63" Cadence="90">
 			<textevent distoffset="200" message="Level your pelvis and engage your core. Belly button in!"/>
@@ -23,7 +29,7 @@
 			<textevent distoffset="800" message="Engage your core."/>
 			<textevent distoffset="900" message="Last 100 meters. Almost there!"/>
 		</SteadyState>
-		<SteadyState Duration="1000" Power="0.67" Cadence="90">
+		<SteadyState Duration="1000" Power="0.65" Cadence="90">
 			<textevent distoffset="200" message="Bring your leg forward with your hip using a pelvis rotation."/>
 			<textevent distoffset="300" message="Back again, easy breathing. Smooth feet. Optimal cadence. Keep it up."/>
 			<textevent distoffset="400" message="Soften your knees."/>
@@ -33,7 +39,7 @@
 			<textevent distoffset="800" message="Align your upper body by lengthening your spine."/>
 			<textevent distoffset="900" message="Last 100 meters. Almost there!"/>
 		</SteadyState>
-		<SteadyState Duration="1000" Power="0.7" Cadence="90">
+		<SteadyState Duration="1000" Power="0.67" Cadence="90">
 			<textevent distoffset="200" message="Easy breathing. Smooth feet. Cadence comfortable. Looking good."/>
 			<textevent distoffset="300" message="How is your form? Back straight, pull upward with your neck and lean your torso forward slightly."/>
 			<textevent distoffset="400" message="Keep you arms going. Bend them at 90 degrees. Swing them to the rear, not forward to avoid the Rocky style! ... Meaning, your arm should never cross the center line. And keep your elbows close to your sides. "/>
@@ -43,7 +49,7 @@
 			<textevent distoffset="800" message="Hit the belt under your hips and peel your feet up. Do not overstrike."/>
 			<textevent distoffset="900" message="Last 100 meters. Almost there!"/>
 		</SteadyState>
-		<Cooldown Duration="800" PowerLow="0.6" PowerHigh="0.5">
+		<Cooldown Duration="800" PowerLow="0.52" PowerHigh="0.5">
 			<textevent distoffset="200" message="Great work! Well done."/>
 			<textevent distoffset="300" message="Remember. Stretch your legs. Work on your quads and hamstrings."/>
 			<textevent distoffset="400" message="See you soon!"/>
