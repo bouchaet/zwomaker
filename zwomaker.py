@@ -93,7 +93,7 @@ class ZwoElement():
             total = maxRep *(duration + offDuration)
             while offset < total - offDuration:
                 repEnd = rep * duration + (rep - 1) * offDuration
-                restBegin = rep * (duration + offDuration)
+                restEnd = rep * (duration + offDuration)
                 if offset == repEnd - 100 and repEnd >= 200:
                     el.add_element(
                         TextEvent(offset, "Last 100 meters. Almost there!"))
@@ -105,7 +105,7 @@ class ZwoElement():
                         el.add_element(TextEvent(offset, msg))
 
                 offset += 100
-                if offset >= repEnd and offset < restBegin:
+                if offset >= repEnd and offset < restEnd:
                     offset += offDuration + first_offset
                     rep += 1
 
