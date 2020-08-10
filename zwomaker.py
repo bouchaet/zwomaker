@@ -6,9 +6,9 @@ import argparse
 class Messages():
     def __init__(self):
         self.pattern = "^M [WIC] .*$"
-        self.warmup = {"pos": -1, "messages": []}
-        self.interval = {"pos": -1, "messages": []}
-        self.cooldown = {"pos": -1, "messages": []}
+        self.warmup = {"pos": -1, "messages": [], "circular": False}
+        self.interval = {"pos": -1, "messages": [], "circular": True}
+        self.cooldown = {"pos": -1, "messages": [], "circular": False}
 
     def parse(self, text):
         classifier = { 
@@ -31,16 +31,21 @@ class Messages():
         return self._get_next(self.warmup)
   
     def _get_next(self, msgDict) -> str:
-        if not len(msgDict["messages"]):
+        msg_count = len(msgDict["messages"])
+        if not msg_count:
             return ""
         
-        nxt = (msgDict["pos"] + 1)%len(msgDict["messages"])
+        nxt = (msgDict["pos"] + 1)
+        if msgDict["circular"]:
+            nxt %= msg_count
         msgDict["pos"] = nxt
+        if nxt >= msg_count:
+            return ""
         return msgDict["messages"][nxt]
         
 
 class ZwoElement():
-    def __init__(self, name, value=None, next_msg="get_next_interval"):
+    def __init__(self, name, value="", next_msg="get_next_interval"):
         self._name = name
         self._attribs = []
         self._elements = []
@@ -50,10 +55,7 @@ class ZwoElement():
     def to_xml(self):
         att_str = "".join([f" {k}=\"{v}\"" for k, v in self._attribs])
         subs = "".join([s.to_xml() for s in self._elements])
-        value = ""
-        if self._value:
-            value = self._value
-        return f"<{self._name}{att_str}>{value}{subs}</{self._name}>"
+        return f"<{self._name}{att_str}>{self._value}{subs}</{self._name}>"
 
     def add_attrib(self, name, value):
         self._attribs.append((name, value))
@@ -67,49 +69,44 @@ class ZwoElement():
                      if x[0].lower().endswith("duration")),
                     0)
 
-    def set_duration(self, value: int):
-        for x in self._attribs:
-            if x[0].lower().endswith("duration"):
-                x[1] = value
-    
     def get_off_duration(self) -> int:
         return next((int(x[1]) for x in self._attribs 
                     if x[0].lower() == "offduration"),
                    0)
-
-    duration = property(get_duration, set_duration)
 
     def get_repeat(self):
         return next((x[1] for x in self._attribs if x[0].lower() == "repeat"), 1)
 
     def insert_messages(self, messages: Messages) -> None:
         elements = [self]
+        first_offset = 200
         while len(elements):
             el = elements.pop()
             elements.extend(el._elements)
-            if el.duration < 400:
-                continue
 
-            silentDist = 200
-            offset = silentDist
-            next_msg = getattr(messages, el._next_msg)
-            maxRep = el.get_repeat()
-            duration = el.duration
+            duration, offDuration = el.get_duration(), el.get_off_duration()
+            maxRep, rep = el.get_repeat(), 1
             offDuration = el.get_off_duration()
-            rep = 1
+            next_msg = getattr(messages, el._next_msg)
+
+            offset = first_offset
             total = maxRep *(duration + offDuration)
             while offset < total - offDuration:
-                if offset == rep * duration + (rep - 1) * offDuration - 100:
+                repEnd = rep * duration + (rep - 1) * offDuration
+                restBegin = rep * (duration + offDuration)
+                if offset == repEnd - 100 and repEnd >= 200:
                     el.add_element(
                         TextEvent(offset, "Last 100 meters. Almost there!"))
+                elif duration < 400:
+                    continue
                 else:
                     msg = next_msg()
                     if msg:
                         el.add_element(TextEvent(offset, msg))
+
                 offset += 100
-                if offset >= rep * duration + (rep -1) * offDuration \
-                    and offset < rep * (duration + offDuration):
-                    offset += offDuration + silentDist
+                if offset >= repEnd and offset < restBegin:
+                    offset += offDuration + first_offset
                     rep += 1
 
 
