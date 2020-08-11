@@ -12,7 +12,13 @@ file by hand anymore.
 
 You need python 3.x on your machine.
 
-## Running ##
+## Usage ##
+
+Create a zwift workout file my_workout.zwo from a spec file my_workout.zwospec:
+
+```bash
+> python3 zwomaker.py -s ./my_workout.zwospec -o my_workout.zwo
+```
 
 See help `python3 zwomaker.py -h`
 
