@@ -97,9 +97,7 @@ class ZwoElement():
                 if offset == repEnd - 100 and repEnd >= 200:
                     el.add_element(
                         TextEvent(offset, "Last 100 meters. Almost there!"))
-                elif duration < 400:
-                    continue
-                else:
+                elif duration > 400:
                     msg = next_msg()
                     if msg:
                         el.add_element(TextEvent(offset, msg))

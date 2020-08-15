@@ -39,7 +39,7 @@ The following element are supported:
 
 For a 3x 800m with a 4x200m primer set, your spec file would look like this:
 
-```
+```text
 N 3x800 @ 10K pace
 W 2000 40:60
 I 4 200:100 75:50 180
@@ -59,3 +59,16 @@ message types are possible using the following line prefix:
 
 There are examples available if you need some inspiration to get you
 started. The spec files are under the example folder.
+
+## Speed ##
+
+Using your best time over a mile is not an usual reference for most of the
+people. This table gives a rough estimate of different distance pace based 
+on the % of your mile pace.
+
+|Distance | Mile pace % |
+|---|---|
+|5K|93%|
+|10K|88%|
+|Half-marathon|80%|
+|Marathon|75%|
