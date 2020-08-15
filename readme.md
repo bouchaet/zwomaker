@@ -5,8 +5,8 @@ a Zwift workout for your running training. Since the official Zwift workout
 creator only works for cycling, ZwoMaker can help you by building a file
 from a simple specification.
 
-ZwoMaker is a command line tool. Nothing fancy here, but no need to write an
-file by hand anymore.
+ZwoMaker is a command line tool. Nothing fancy here, but you do not need to
+write an XML file by hand.
 
 ## Installation ##
 
