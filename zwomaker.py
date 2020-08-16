@@ -1,6 +1,7 @@
 import re
 import xml.dom.minidom
 import argparse
+from typing import Iterator
 
 
 class Messages():
@@ -106,7 +107,6 @@ class ZwoElement():
                 if offset >= repEnd and offset < restEnd:
                     offset += offDuration + first_offset
                     rep += 1
-
 
 class TextEvent(ZwoElement):
     def __init__(self, distoffset, message):
@@ -214,6 +214,16 @@ class Name(ZwoParser):
         return ZwoElement("name", line[2:])
 
 
+class Tag(ZwoParser):
+    def __init__(self):
+        super().__init__("^T .*")
+
+    def parse(self, line):
+        tag = ZwoElement("tag")
+        tag.add_attrib("name", line[2:])
+        return tag
+
+
 class Comment(ZwoParser):
     def __init__(self):
         super().__init__("^#.*$")
@@ -222,6 +232,7 @@ class Comment(ZwoParser):
 def lex(zwo_spec: str) -> ZwoElement:
     wof = ZwoElement("workout_file")
     wo = ZwoElement("workout")
+    tags = ZwoElement("tags")
     parser_actions = [
         (Intervals(), wo.add_element),
         (Ramp(), wo.add_element),
@@ -229,6 +240,7 @@ def lex(zwo_spec: str) -> ZwoElement:
         (Warmup(), wo.add_element),
         (Cooldown(), wo.add_element),
         (SteadyState(), wo.add_element),
+        (Tag(), tags.add_element),
         (Comment(), lambda x : print("Ignore comment"))
     ]
 
@@ -247,25 +259,21 @@ def lex(zwo_spec: str) -> ZwoElement:
         if not match:
             print("*** NO MATCH ***")
 
+    for tag in get_default_tags():
+        tags.add_element(tag)
     wof.add_element(ZwoElement("author", "zwomaker"))
     wof.add_element(ZwoElement("description", "prepared by zwomaker"))
     wof.add_element(ZwoElement("sportType", "run"))
-    wof.add_element(get_tags())
+    wof.add_element(tags)
     wof.add_element(wo)
     return wof
 
 
-def get_tags() -> ZwoElement:
-    tags = ZwoElement("tags")
-
-    tag = ZwoElement("tag")
-    tag.add_attrib("name", "zwomaker")
-    tags.add_element(tag)
-
-    tag = ZwoElement("tag")
-    tag.add_attrib("name", "running")
-    tags.add_element(tag)
-    return tags
+def get_default_tags() -> Iterator[ZwoElement]:
+    for name in ["zwomaker", "running"]:
+        tag = ZwoElement("tag")
+        tag.add_attrib("name", name)
+        yield tag
     
 
 def pretty_print(xml_string: str) -> str:
